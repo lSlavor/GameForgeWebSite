@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина товаров</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>GameForge - Игровые ПК</h1>
+            <nav>
+                <a href="index.html">Главная</a>
+                <a href="menu.html">Каталог</a>
+                <a href="cart.html" class="active">Корзина</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="cart">
+            <h2>Корзина</h2>
+            <div id="cart-items" class="cart-items"></div>
+            <p class="total-price">Общая сумма: <span id="total-price">0</span> руб</p>
+            <button class="checkout-btn" onclick="openModal()">Оформить заказ</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 GameForge - магазин игровых ПК</p>
+    </footer>    
+
+    <!-- Модальное окно -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Оформление заказа</h2>
+            <form id="order-form">
+                <label for="first-name">Имя:</label>
+                <input type="text" id="first-name" required>
+
+                <label for="last-name">Фамилия:</label>
+                <input type="text" id="last-name" required>
+
+                <label for="phone">Номер телефона:</label>
+                <input type="tel" id="phone" required>
+
+                <label for="address">Адрес (город, улица, дом):</label>
+                <input type="text" id="address" required>
+
+                <button type="button" class="btn" id="modal-checkout-btn" onclick="submitOrder()">Оформить заказ</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
