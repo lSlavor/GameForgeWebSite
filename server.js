@@ -1,5 +1,6 @@
 const express = require('express');
 const { Client } = require('pg');
+const path = require('path');
 const app = express();
 const port = 3000;
 
@@ -14,7 +15,7 @@ const client = new Client({
 client.connect();
 
 // Middleware для обработки JSON и статики
-app.use(express.static('Web'));
+app.use(express.static(path.join(__dirname)));
 app.use(express.json());
 
 // Создание заказа
