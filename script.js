@@ -190,10 +190,10 @@ function closeModal() {
 
 // Оформление заказа
 function submitOrder() {
-    const firstName = document.getElementById('first-name').value;
-    const lastName = document.getElementById('last-name').value;
-    const phone = document.getElementById('phone').value;
-    const address = document.getElementById('address').value;
+    const firstName = document.getElementById('first-name').value.trim();
+    const lastName = document.getElementById('last-name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const address = document.getElementById('address').value.trim();
 
     if (!firstName || !lastName || !phone || !address) {
         alert('Пожалуйста, заполните все поля.');
@@ -216,10 +216,18 @@ function submitOrder() {
         body: JSON.stringify(orderData)
     })
     .then(response => {
+        const contentType = response.headers.get('Content-Type');
+        
+        // Проверка, что ответ в формате JSON
         if (!response.ok) {
-            return response.json().then(data => {
-                throw new Error(data.error || 'Ошибка сервера');
-            });
+            if (contentType && contentType.includes('application/json')) {
+                return response.json().then(data => {
+                    throw new Error(data.error || 'Ошибка сервера');
+                });
+            } else {
+                // Если сервер возвращает HTML (ошибка подключения к базе данных)
+                throw new Error(`Ошибка 503: Сервер временно недоступен или отсутствует база данных.`);
+            }
         }
         return response.text();
     })
@@ -233,9 +241,10 @@ function submitOrder() {
         closeModal();
     })
     .catch(error => {
-        alert(error.message);
+        alert('Произошла ошибка: ' + error.message);
     });
 }
+
 
 
 // Список цен для компонентов
@@ -347,11 +356,21 @@ document.getElementById('question-form').addEventListener('submit', async (event
         });
 
         if (response.ok) {
-            document.getElementById('form-message').textContent = 'Ваш вопрос успешно отправлен!';
-            document.getElementById('question-form').reset(); // Очищаем форму
+            const contentType = response.headers.get('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                document.getElementById('form-message').textContent = 'Ваш вопрос успешно отправлен!';
+                document.getElementById('question-form').reset(); // Очищаем форму
+            } else {
+                throw new Error('Сервер вернул неожиданный ответ. Возможно, отсутствует база данных.');
+            }
         } else {
-            const errorData = await response.json();
-            alert(errorData.error || 'Ошибка при отправке вопроса. Пожалуйста, попробуйте позже.');
+            const contentType = response.headers.get('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                const errorData = await response.json();
+                alert(errorData.error || 'Ошибка при отправке вопроса. Пожалуйста, попробуйте позже.');
+            } else {
+                throw new Error('503: Service Unavailable. Сервер недоступен. Ошибка обращения к базе данных.');
+            }
         }
     } catch (error) {
         alert('Произошла ошибка: ' + error.message);
