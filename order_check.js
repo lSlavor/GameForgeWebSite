@@ -33,7 +33,7 @@ document.getElementById('order-check-form').addEventListener('submit', async (ev
                 const error = await response.json();
                 alert(error.message || 'Ошибка при проверке заказа.');
             } else {
-                throw new Error('503: Service Unavailable. Сервер недоступен. Ошибка обращения к базе данных.');
+                throw new Error('503 Service Unavailable: Сервер недоступен. Ошибка обращения к базе данных.');
             }
         }
     } catch (error) {

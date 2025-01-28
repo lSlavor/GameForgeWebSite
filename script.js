@@ -226,7 +226,7 @@ function submitOrder() {
                 });
             } else {
                 // Если сервер возвращает HTML (ошибка подключения к базе данных)
-                throw new Error(`Ошибка 503: Сервер временно недоступен или отсутствует база данных.`);
+                throw new Error(`503 Service Unavailable: Сервер временно недоступен или отсутствует база данных.`);
             }
         }
         return response.text();
@@ -369,7 +369,7 @@ document.getElementById('question-form').addEventListener('submit', async (event
                 const errorData = await response.json();
                 alert(errorData.error || 'Ошибка при отправке вопроса. Пожалуйста, попробуйте позже.');
             } else {
-                throw new Error('503: Service Unavailable. Сервер недоступен. Ошибка обращения к базе данных.');
+                throw new Error('503 Service Unavailable: Сервер недоступен. Ошибка обращения к базе данных.');
             }
         }
     } catch (error) {
