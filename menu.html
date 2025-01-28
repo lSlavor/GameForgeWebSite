@@ -15,6 +15,7 @@
                 <a href="menu.html" class="active">Каталог</a>
                 <a href="cart.html">Корзина</a>
                 <a href="contacts.html">Контакты</a>
+                <a href="order_check.html">Проверить заказ</a>
             </nav>
         </div>
     </header>
@@ -22,13 +23,59 @@
     <main>
         <section class="catalog">
             <h2>Каталог товаров</h2>
+            <p class="main-slogan">Лучшие игровые ПК для вас!</p>
+            <div class="configurator-section" id="configuratorSection">
+                <p class="configurator-text">Соберите уникальный компьютер по вашим требованиям!</p>
+                <button id="openModalButton" class="configurator-button" onclick="openConfigurator()">Конфигуратор ПК</button>
+            </div>            
             <div id="product-list" class="product-list"></div>
         </section>
+        <div id="error-message" class="error-message" style="display: none;"></div>
     </main>
+    
+    
 
     <footer>
         <p>&copy; 2025 GameForge - магазин игровых ПК</p>
     </footer>
+
+    <!-- Модальное окно для конфигуратора -->
+    <div id="configurator-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeConfigurator()">&times;</span>
+            <h2>Конфигуратор игрового ПК</h2>
+            <div class="configurator">
+                <img id="config-pc-image" src="images/pc1.jpg" alt="Собранный ПК">
+
+                <label for="cpu">Процессор:</label>
+                <select id="cpu">
+                    <option value="ryzen5">AMD Ryzen 5 5600X</option>
+                    <option value="i7">Intel Core i7 11700K</option>
+                    <option value="ryzen7">AMD Ryzen 7 5800X</option>
+                    <option value="i9">Intel Core i9 12900K</option>
+                </select>
+
+                <label for="gpu">Видеокарта:</label>
+                <select id="gpu">
+                    <option value="rtx3060">Nvidia GeForce RTX 3060 Ti</option>
+                    <option value="rtx3070">Nvidia GeForce RTX 3070</option>
+                    <option value="rx6800">AMD Radeon RX 6800</option>
+                    <option value="rtx3080">Nvidia GeForce RTX 4080 Ti</option>
+                </select>
+
+                <label for="ram">Оперативная память:</label>
+                <select id="ram">
+                    <option value="16gb">16GB RAM</option>
+                    <option value="32gb">32GB RAM</option>
+                    <option value="64gb">64GB RAM</option>
+                </select>
+
+                <p>Цена: <span id="config-price">50000</span> руб</p>
+                <button class="btn" onclick="addToCartFromConfigurator()">Добавить в корзину</button>
+            </div>
+        </div>
+    </div>
+
 
     <script src="script.js"></script>
 </body>

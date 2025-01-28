@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка заказ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>GameForge - Игровые ПК</h1>
+            <nav>
+                <a href="index.html">Главная</a>
+                <a href="menu.html">Каталог</a>
+                <a href="cart.html">Корзина</a>
+                <a href="contacts.html">Контакты</a>
+                <a href="order_check.html" class="active">Проверить заказ</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section class="order-check-section">
+            <h2>Проверка заказа</h2>
+            <p>На данной странице вы можете узнать статус вашего заказа!</p>
+            <form id="order-check-form">
+                <label for="phone-input">Введите ваш номер телефона, который вы указывали при оформлении заказа:</label>
+                <input type="text" id="phone-input" class="phone-input" placeholder="Например: +79001234567" required>
+                <button type="submit" class="check-order-btn">Проверить заказ</button>
+            </form>
+            <p class="order-check-info">Для подтверждения на ваш номер телефона будет отправлен одноразовый код доступа для просмотра заказа.</p>
+            <div id="order-details" class="order-details hidden">
+                <!-- Здесь будет отображаться информация о заказе -->
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 GameForge - магазин игровых ПК</p>
+    </footer>
+    
+    <script src="order_check.js"></script>
+</body>
+</html>

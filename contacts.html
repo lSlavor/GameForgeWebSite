@@ -15,21 +15,45 @@
                 <a href="menu.html">Каталог</a>
                 <a href="cart.html">Корзина</a>
                 <a href="contacts.html" class="active">Контакты</a>
+                <a href="order_check.html">Проверить заказ</a>
             </nav>
         </div>
     </header>
+
     <main class="contacts-main">
-        <h2 class="contacts-heading">Контактная информация</h2>
-        <div class="contact-details">
-            <p class="contact-item"><strong>Адрес:</strong> г. Киров, ул. Карла Маркса, д. 1</p>
-            <p class="contact-item"><strong>Телефон:</strong> +7 (8332) 123-45-67</p>
-            <p class="contact-item"><strong>Email:</strong> shop@megagameforge.nenastoyashiy</p>
+        <div class="contacts-def">
+            <h2 class="contacts-heading">Контактная информация</h2>
+            <div class="contact-details">
+                <p class="contact-item"><strong>Адрес:</strong> г. Киров, ул. Карла Маркса, д. 1</p>
+                <p class="contact-item"><strong>Телефон:</strong> +99 (8332) 123-456</p>
+                <p class="contact-item"><strong>Email:</strong> shop@gameforge.rururu</p>
+                <p class="signature">made and designed by Slavor</p>
+            </div>
+        </div>
+    
+        <div class="contact-form">
+            <h2 class="form-heading">Задайте нам вопрос</h2>
+            <form id="question-form">
+                <label for="name">Ваше имя:</label>
+                <input type="text" id="name" name="name" required>
+    
+                <label for="phone">Ваш номер телефона:</label>
+                <input type="text" id="phone" name="phone" required>
+    
+                <label for="question-text">Ваш вопрос:</label>
+                <textarea id="question-text" name="question-text" rows="5" required style="resize: none;"></textarea>
+    
+                <button type="submit">Отправить</button>
+            </form>
+            <p id="form-message" class="form-message"></p>
         </div>
     </main>
+    
     
     <footer>
         <p>&copy; 2025 GameForge - магазин игровых ПК</p>
     </footer>
+    
     <script src="script.js"></script>
 </body>
 </html>

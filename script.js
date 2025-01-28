@@ -1,12 +1,42 @@
 // Список товаров
-const products = [
-    { id: 1, name: 'ПК для игр Ryzen 5 5600X / RTX 3060 Ti', price: 75000, image: 'images/pc1.jpg' },
-    { id: 2, name: 'ПК для игр Intel Core i7 11700K / RTX 3070', price: 95000, image: 'images/pc2.jpg' },
-    { id: 3, name: 'Игровой ПК AMD Ryzen 7 5800X / RX 6800', price: 120000, image: 'images/pc3.jpg' },
-    { id: 4, name: 'Игровой ПК Intel Core i9 12900K / RTX 3080 Ti', price: 150000, image: 'images/pc4.jpg' },
-    { id: 5, name: 'ПК для киберспорта Ryzen 7 7700X / RTX 4060', price: 135000, image: 'images/pc5.jpg' },
-    { id: 6, name: 'Ультрагеймерский ПК Intel Core i9 13900K / RTX 5090', price: 549000, image: 'images/pc6.jpg' }
-];
+// Список товаров загружается динамически из базы данных
+let products = [];
+
+async function fetchProducts() {
+    try {
+        const response = await fetch('/api/products'); // Запрос к серверу
+        if (!response.ok) {
+            throw new Error('Ошибка соединения с сервером.');
+        }
+        products = await response.json(); // Загружаем данные
+        if (products.length === 0) {
+            throw new Error('Каталог товаров пуст.');
+        }
+        loadCatalog(); // Загрузка каталога
+    } catch (error) {
+        console.error('Ошибка:', error);
+        products = []; // Очистка списка товаров
+        showErrorMessage(error.message || 'Произошла ошибка.');
+    }
+}
+
+function showErrorMessage(message) {
+    // Показать сообщение об ошибке
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.textContent = `Ошибка: ${message}`;
+    errorMessage.style.display = 'block'; // Показать сообщение
+
+    // Скрыть секцию "configurator-section"
+    const configuratorSection = document.getElementById('configuratorSection');
+    if (configuratorSection) {
+        configuratorSection.style.display = 'none'; // Скрыть элемент
+    }
+}
+
+
+
+// Вызываем загрузку товаров при старте приложения
+fetchProducts();
 
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -17,7 +47,6 @@ function updateCartSummary() {
     document.querySelectorAll('#cart-count').forEach(el => el.textContent = cartCount);
 }
 
-// Загрузка каталога
 // Загрузка каталога
 function loadCatalog() {
     const productList = document.getElementById('product-list');
@@ -34,8 +63,6 @@ function loadCatalog() {
     });
 }
 
-
-// Добавление в корзину
 // Добавление в корзину с анимацией
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
@@ -74,7 +101,6 @@ function addToCart(productId) {
     });
 }
 
-
 // Загрузка корзины
 function loadCartItems() {
     const cartItems = document.getElementById('cart-items');
@@ -103,9 +129,6 @@ function loadCartItems() {
     updateTotalPrice(); // Обновляем итоговую цену
 }
 
-
-
-// Удаление из корзины
 // Удаление из корзины
 function removeFromCart(productId) {
     cart = cart.filter(item => item.id !== productId);
@@ -117,14 +140,11 @@ function removeFromCart(productId) {
     updateTotalPrice();
 }
 
-
-// Обновление общей суммы
 // Обновление общей суммы
 function updateTotalPrice() {
     const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     document.getElementById('total-price').textContent = totalPrice; // Обновляем отображение общей суммы
 }
-
 
 
 // Оформление заказа
@@ -146,11 +166,6 @@ function checkout() {
     document.getElementById('total-price').textContent = 0; // Обновляем отображение общей суммы
 }
 
-
-
-
-
-
 // Инициализация
 window.onload = () => {
     if (document.getElementById('product-list')) {
@@ -171,6 +186,7 @@ function openModal() {
 function closeModal() {
     document.getElementById('modal').style.display = 'none';
 }
+
 
 // Оформление заказа
 function submitOrder() {
@@ -199,7 +215,14 @@ function submitOrder() {
         },
         body: JSON.stringify(orderData)
     })
-    .then(response => response.text())
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.error || 'Ошибка сервера');
+            });
+        }
+        return response.text();
+    })
     .then(message => {
         alert(message);
         cart = [];
@@ -209,6 +232,129 @@ function submitOrder() {
         updateTotalPrice();
         closeModal();
     })
-    .catch(error => console.error('Ошибка:', error));
+    .catch(error => {
+        alert(error.message);
+    });
 }
+
+
+// Список цен для компонентов
+const componentPrices = {
+    ryzen5: 20000,
+    i7: 25000,
+    ryzen7: 30000,
+    i9: 35000,
+    rtx3060: 25000,
+    rtx3070: 30000,
+    rx6800: 35000,
+    rtx3080: 45000,
+    "16gb": 5000,
+    "32gb": 10000,
+    "64gb": 15000
+};
+
+// Открытие модального окна конфигуратора
+function openConfigurator() {
+    const modal = document.getElementById('configurator-modal');
+    modal.style.display = 'block';
+
+    // Привязка обработчиков событий
+    document.getElementById('cpu').addEventListener('change', updateConfigPrice);
+    document.getElementById('gpu').addEventListener('change', updateConfigPrice);
+    document.getElementById('ram').addEventListener('change', updateConfigPrice);
+}
+
+// Закрытие модального окна конфигуратора
+function closeConfigurator() {
+    const modal = document.getElementById('configurator-modal');
+    modal.style.display = 'none';
+
+    // Удаление обработчиков событий
+    document.getElementById('cpu').removeEventListener('change', updateConfigPrice);
+    document.getElementById('gpu').removeEventListener('change', updateConfigPrice);
+    document.getElementById('ram').removeEventListener('change', updateConfigPrice);
+}
+
+// Обновление цены на основе выбранных компонентов
+function updateConfigPrice() {
+    const cpu = document.getElementById('cpu').value;
+    const gpu = document.getElementById('gpu').value;
+    const ram = document.getElementById('ram').value;
+
+    const price = componentPrices[cpu] + componentPrices[gpu] + componentPrices[ram];
+    document.getElementById('config-price').textContent = price;
+}
+
+
+// Добавление собранного ПК в корзину
+function addToCartFromConfigurator() {
+    const cpu = document.getElementById('cpu').value;
+    const gpu = document.getElementById('gpu').value;
+    const ram = document.getElementById('ram').value;
+
+    const price = componentPrices[cpu] + componentPrices[gpu] + componentPrices[ram];
+    const productName = `${cpu} / ${gpu} / ${ram}`;
+
+    // Добавляем собранный ПК в корзину
+    const item = cart.find(item => item.name === productName);
+    if (item) {
+        item.quantity += 1;
+    } else {
+        cart.push({ id: Date.now(), name: productName, price: price, quantity: 1 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartSummary();
+    closeConfigurator();
+}
+
+
+document.getElementById('question-form').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Предотвращаем стандартное поведение формы
+
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const questionText = document.getElementById('question-text').value.trim();
+
+    // Проверяем, что поля заполнены
+    if (!name || !phone || !questionText) {
+        alert('Пожалуйста, заполните все поля.');
+        return;
+    }
+
+    // Валидация имени: только буквы и пробелы
+    const nameRegex = /^[a-zA-Zа-яА-ЯёЁ\s]+$/;
+    if (!nameRegex.test(name)) {
+        alert('Имя должно содержать только буквы и пробелы.');
+        return;
+    }
+
+    // Валидация телефона: допустимы цифры и символы +, -, ()
+    const phoneRegex = /^[\d\s+\-()]+$/;
+    if (!phoneRegex.test(phone)) {
+        alert('Введите корректный номер телефона.');
+        return;
+    }
+
+    // Отправка данных на сервер
+    try {
+        const response = await fetch('/api/questions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, phone, question_text: questionText }),
+        });
+
+        if (response.ok) {
+            document.getElementById('form-message').textContent = 'Ваш вопрос успешно отправлен!';
+            document.getElementById('question-form').reset(); // Очищаем форму
+        } else {
+            const errorData = await response.json();
+            alert(errorData.error || 'Ошибка при отправке вопроса. Пожалуйста, попробуйте позже.');
+        }
+    } catch (error) {
+        alert('Произошла ошибка: ' + error.message);
+    }
+});
 

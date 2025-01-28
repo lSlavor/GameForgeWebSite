@@ -6,7 +6,7 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #333333;
     color: white;
     padding: 15px 0;
 }
@@ -28,12 +28,13 @@ nav a {
     text-decoration: none;
 }
 
-nav a:hover {
+/* nav a:hover {
     text-decoration: underline;
-}
+} */
 
 main {
     padding: 20px;
+    flex: 1;
 }
 
 /* Стили для списка товаров */
@@ -344,23 +345,15 @@ button.checkout-btn:hover {
     background-color: #1976D2;     /* Более тёмный синий */
 }
 
-/* Основной стиль для футера */
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #333;  /* Тёмный фон */
-    color: white;            /* Белый текст */
-    text-align: center;      /* Центровка текста */
-    padding: 10px 0;         /* Отступы сверху и снизу */
-    font-size: 14px;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);  /* Лёгкая тень */
-}
+
 
 /* Дополнительное оформление для адаптивности */
 body {
     margin-bottom: 50px;  /* Чтобы контент не перекрывался футером */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
 }
 
 /* Стили для строки товара в корзине */
@@ -580,13 +573,12 @@ nav a:hover {
 
 /* Подвал */
 footer {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 15px;
     background-color: #282c34;
     color: #ffffff;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
 }
 
 /* Стили для блока с картинкой */
@@ -606,13 +598,9 @@ footer {
 
 /* Уникальные стили для страницы контактов */
 .contacts-main {
-    background-color: #f5f5f5;
-    padding: 40px;
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .contacts-heading {
@@ -697,4 +685,256 @@ footer {
         transform: scale(0.5) translate(100%, -50%); /* Двигаем к позиции корзины */
         opacity: 0;
     }
+}
+
+.contacts-def{
+    min-height: 500px;
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 8px;
+}
+
+
+/* Стили для модального окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 5px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.configurator img {
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+.configurator select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.configurator button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.configurator button:hover {
+    background-color: #45a049;
+}
+
+.contact-form {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.contact-form h2 {
+    margin-bottom: 15px;
+}
+
+.contact-form label {
+    display: block;
+    margin-top: 10px;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form button {
+    width: 100%;
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.contact-form button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin-top: 15px;
+    border: none;
+}
+
+.contact-form button:hover {
+    background-color: #0056b3;
+}
+
+.form-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: green;
+}
+
+/* Секция с текстом и кнопкой конфигуратора */
+.configurator-section {
+    position: absolute;
+    top: 200px; /* Отступ от верхнего края страницы */
+    right: 60px; /* Расположение справа */
+    text-align: center; /* Центрирование кнопки под текстом */
+    border: 2px solid rgba(22, 23, 105, 0.08); /* Полупрозрачная рамка */
+    border-radius: 12px; /* Скругление углов */
+    padding: 20px; /* Отступ внутри секции */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Лёгкая тень для дополнительного выделения */
+}
+
+
+/* Текст конфигуратора */
+.configurator-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Кнопка конфигуратора */
+.configurator-button {
+    background: linear-gradient(90deg, #5912FE 0%, #2D0E6B 100%);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 10px;
+}
+
+.configurator-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.configurator-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+.main-slogan {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #444;
+    margin: 20px 0; /* Отступы сверху и снизу */
+}
+
+.order-check-section {
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 20px;
+    border: 1px solid rgba(22, 23, 105, 0.08);
+    border-radius: 10px;
+    background: #f9f9f9;
+}
+
+.order-check-section h2 {
+    font-size: 24px;
+    color: #161769;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.phone-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.check-order-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(to right, #5912fe, #2d0e6b);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.check-order-btn:hover {
+    background: linear-gradient(to right, #2d0e6b, #5912fe);
+}
+
+.order-check-info {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.order-details {
+    margin-top: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+.signature {
+    font-family: 'Poppins', sans-serif; /* Современный и изящный шрифт */
+    font-size: 16px; /* Размер текста */
+    font-weight: bold; /* Жирный текст */
+    /* text-transform: uppercase; Верхний регистр для эффектности */
+    background: linear-gradient(90deg, #ff7eb3, #ff758c, #ff6b73);
+    background-clip: text; /* Применяем градиент к тексту */
+    -webkit-text-fill-color: transparent; /* Прозрачный текст с градиентом */
+    text-align: center; /* Центрируем текст */
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Лёгкая тень для объёма */
+    display: inline-block; /* Для правильной работы анимации */
+    transition: transform 0.3s ease-in-out, text-shadow 0.3s ease-in-out; /* Плавная анимация */
+    cursor: default; /* Указатель при наведении */
+}
+
+.signature:hover {
+    transform: scale(1.1); /* Увеличение текста при наведении */
+    text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5); /* Усиление тени */
+}
+
+.error-message {
+    color: #ff4c4c;
+    background-color: #ffe6e6;
+    border: 1px solid #ff0000;
+    padding: 10px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
 }
