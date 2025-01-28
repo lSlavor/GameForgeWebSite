@@ -20,11 +20,21 @@ document.getElementById('order-check-form').addEventListener('submit', async (ev
         });
 
         if (response.ok) {
-            const data = await response.json();
-            displayOrderDetails(data);
+            const contentType = response.headers.get('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                displayOrderDetails(data);
+            } else {
+                throw new Error('Сервер вернул неожиданный ответ. Возможно, отсутствует база данных.');
+            }
         } else {
-            const error = await response.json();
-            alert(error.message || 'Ошибка при проверке заказа.');
+            const contentType = response.headers.get('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                const error = await response.json();
+                alert(error.message || 'Ошибка при проверке заказа.');
+            } else {
+                throw new Error('Сервер недоступен или вернул HTML вместо JSON.');
+            }
         }
     } catch (error) {
         alert('Произошла ошибка: ' + error.message);
